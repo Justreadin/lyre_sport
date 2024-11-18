@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post-detail">
+    <h1>{{ post.title }}</h1>
+    <p>Posted on {{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+    <p>{{ post.content }}</p>
+    
+    <!-- Edit and Delete Options for the Post Owner -->
+    {% if session.get('user_id') == post.user_id %}
+        <a href="{{ url_for('main.edit_post', post_id=post.id) }}" class="btn btn-warning">Edit</a>
+        <form method="POST" action="{{ url_for('main.delete_post', post_id=post.id) }}" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    {% endif %}
+</div>
+
+<!-- Comments Section -->
+<div class="comments-section">
+    <h3>Comments</h3>
+    <div id="comments-section">
+        {% for comment in post.comments %}
+            <div class="comment">
+                <p><strong>{{ comment.user.username }}</strong>: {{ comment.content }}</p>
+                <small>{{ comment.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Comment Form -->
+    {% if session.get('user_id') %}
+        <form action="{{ url_for('main.add_comment', post_id=post.id) }}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.content.label }}<br>
+                {{ form.content(rows=3, class="form-control") }}<br>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    {% else %}
+        <p><a href="{{ url_for('auth.login') }}">Log in</a> to comment.</p>
+    {% endif %}
+    
+    <!-- Refresh Comments Button -->
+    <input type="hidden" id="post-id" value="{{ post.id }}">
+    <button id="refresh-comments" class="btn btn-secondary">Refresh Comments</button>
+</div>
+{% endblock %}

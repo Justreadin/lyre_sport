@@ -1,0 +1,18 @@
+sports_blog/
+├── static/
+│   ├── style.css
+│   └── app.js
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── post.html
+│   ├── create_post.html
+│   ├── edit_post.html
+│   ├── register.html
+│   └── login.html
+├── __init__.py
+├── config.py
+├── forms.py
+├── models.py
+├── routes.py
+└── run.py
