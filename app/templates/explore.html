@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Tech, Sports & Music News{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="text-center py-16 bg-gradient-to-r from-black to-gray-900 text-white">
+  <div class="container mx-auto">
+    <h1 class="text-3xl font-bold mb-6 leading-tight">
+      Explore the Latest in Tech, Sports, and Music
+    </h1>
+    <p class="text-lg font-medium mb-6">
+      Stay ahead of the curve with the latest insights and trends.
+    </p>
+    <a
+      href="#custom-websites"
+      class="mt-4 inline-block bg-white text-gray-800 px-6 py-3 rounded-lg shadow-lg font-semibold hover:shadow-2xl transition-all"
+    >
+      Build Your Custom Website
+    </a>
+  </div>
+</section>
+
+<!-- Category Navigation -->
+<section class="container mx-auto py-8">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-gray-900">Browse by Category</h2>
+    <p class="text-gray-600">Select your favorite category to explore tailored content.</p>
+  </div>
+  <div class="flex justify-center space-x-6">
+    <a href="{{ url_for('main.explore', category='tech') }}" class="category-btn bg-gray-800 text-white px-5 py-3 rounded-lg shadow hover:bg-gray-700 transition">
+      🔧 Tech News
+    </a>
+    <a href="{{ url_for('main.explore', category='sports') }}" class="category-btn bg-gray-800 text-white px-5 py-3 rounded-lg shadow hover:bg-gray-700 transition">
+      ⚽ Sports News
+    </a>
+    <a href="{{ url_for('main.explore', category='music') }}" class="category-btn bg-gray-800 text-white px-5 py-3 rounded-lg shadow hover:bg-gray-700 transition">
+      🎵 Music News
+    </a>
+  </div>
+</section>
+
+<!-- Tech News Section -->
+<section id="tech-news" class="container mx-auto py-10">
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">🚀 Latest in Tech</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for post in tech_posts[:6] %}
+      <div class="post-card bg-gray-800 border border-gray-700 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition h-[300px]">
+        {% if post.image_url %}
+          <img src="{{ post.image_url }}" alt="{{ post.title }}" class="w-full h-40 object-cover rounded-t-lg">
+        {% endif %}
+        <div class="p-4">
+          <h3 class="text-xl font-semibold text-gray-100 mb-2">{{ post.title }}</h3>
+          <p class="text-gray-300 text-sm mb-4">{{ post.content[:100] }}...</p>
+          <a href="{{ url_for('main.post_detail', post_id=post.id) }}" class="text-blue-400 hover:underline">Read More</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-6">
+    <a href="{{ url_for('main.category', category='tech') }}" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:shadow-lg transition">
+      View All Tech News
+    </a>
+  </div>
+</section>
+
+<!-- Sports News Section -->
+<section id="sports-news" class="container mx-auto py-10">
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">🏅 Trending in Sports</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for post in sports_posts[:6] %}
+      <div class="post-card bg-gray-800 border border-gray-700 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition h-[300px]">
+        {% if post.image_url %}
+          <img src="{{ post.image_url }}" alt="{{ post.title }}" class="w-full h-40 object-cover rounded-t-lg">
+        {% endif %}
+        <div class="p-4">
+          <h3 class="text-xl font-semibold text-gray-100 mb-2">{{ post.title }}</h3>
+          <p class="text-gray-300 text-sm mb-4">{{ post.content[:100] }}...</p>
+          <a href="{{ url_for('main.post_detail', post_id=post.id) }}" class="text-blue-400 hover:underline">Read More</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-6">
+    <a href="{{ url_for('main.category', category='sports') }}" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:shadow-lg transition">
+      View All Sports News
+    </a>
+  </div>
+</section>
+
+<!-- Music News Section -->
+<section id="music-news" class="container mx-auto py-10">
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">🎵 Latest in Music</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for post in music_posts[:6] %}
+      <div class="post-card bg-gray-800 border border-gray-700 rounded-lg shadow hover:shadow-lg hover:bg-gray-700 transition h-[300px]">
+        {% if post.image_url %}
+          <img src="{{ post.image_url }}" alt="{{ post.title }}" class="w-full h-40 object-cover rounded-t-lg">
+        {% endif %}
+        <div class="p-4">
+          <h3 class="text-xl font-semibold text-gray-100 mb-2">{{ post.title }}</h3>
+          <p class="text-gray-300 text-sm mb-4">{{ post.content[:100] }}...</p>
+          <a href="{{ url_for('main.post_detail', post_id=post.id) }}" class="text-blue-400 hover:underline">Read More</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-6">
+    <a href="{{ url_for('main.category', category='music') }}" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:shadow-lg transition">
+      View All Music News
+    </a>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  // Modal Script
+  const readMoreButtons = document.querySelectorAll(".read-more-btn");
+  const modal = document.getElementById("post-modal");
+  const closeModal = document.querySelector(".close-modal");
+  const modalTitle = document.getElementById("modal-title");
+  const modalContent = document.getElementById("modal-content");
+  const modalLink = document.getElementById("modal-link");
+
+  readMoreButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const postId = e.target.getAttribute("data-post-id");
+      fetch(`/post/${postId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          modalTitle.textContent = data.title;
+          modalContent.textContent = data.content;
+          modalLink.setAttribute("href", `/post/${postId}`);
+          modal.classList.remove("hidden");
+        });
+    });
+  });
+
+  closeModal.addEventListener("click", () => modal.classList.add("hidden"));
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) modal.classList.add("hidden");
+  });
+</script>
+{% endblock %}

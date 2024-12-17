@@ -1,12 +1,111 @@
 {% extends "base.html" %}
 
+{% block title %}Home | Tech & Sports News & Website Creation{% endblock %}
+
 {% block content %}
-<h1>Lyre Sport</h1>
-{% for post in posts %}
-    <div class="post">
-        <h2><a href="{{ url_for('main.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-        <p>Posted on {{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-        <p>{{ post.content[:150] }}...</p>
+<!-- Hero Section -->
+<section class="hero-section relative">
+  <div class="hero-overlay absolute inset-0">
+    <div class="image-container absolute inset-0">
+      <img src="static/images/pic12.jpg" alt="Image 1" class="hero-image w-full h-full object-cover hidden">
+      <img src="static/images/pic2.jpg" alt="Image 2" class="hero-image w-full h-full object-cover hidden">
+      <img src="static/images/pic3.jpg" alt="Image 3" class="hero-image w-full h-full object-cover hidden">
+      <img src="static/images/pic4.jpg" alt="Image 4" class="hero-image w-full h-full object-cover hidden">
+      <img src="static/images/pic13.jpg" alt="Image 5" class="hero-image w-full h-full object-cover hidden">
+      <img src="static/images/pic14.jpg" alt="Image 6" class="hero-image w-full h-full object-cover hidden">
+      <img src="static/images/pic15.jpg" alt="Image 7" class="hero-image w-full h-full object-cover hidden">
+      <img src="static/images/pic8.jpg" alt="Image 8" class="hero-image w-full h-full object-cover hidden">
     </div>
-{% endfor %}
+  </div>
+  <div class="hero-content relative z-10">
+    <h1 class="hero-heading text-white">Welcome to Lyre Blog</h1>
+    <p class="hero-description text-white">Stay informed on the latest tech, music and sports trends.</p>
+    <a href="{{ url_for('main.explore', category='all') }}" class="cta-button">Explore Now</a>
+  </div>
+</section>
+
+<!-- Latest Tech & Sports News Section -->
+<section class="news py-20 bg-gray-900">
+  <div class="container mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-6 text-gray-100">Latest Tech & Sports News</h2>
+    <p class="text-gray-400 mb-12">Stay updated with breaking news from the world of technology and sports.</p>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {% for post in posts %}
+      <div class="post-card bg-gray-800 border border-gray-700 rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-700 transition">
+        {% if post.image %}
+        <img src="{{ post.image }}" alt="{{ post.title }}" class="w-full h-40 object-cover rounded-t-lg">
+        {% elif post.video_link %}
+        <div class="video-container w-full h-40 bg-black rounded-t-lg">
+          <iframe src="{{ post.video_link }}" class="w-full h-full rounded-t-lg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        {% endif %}
+        <div class="p-4">
+          <h3 class="text-xl font-semibold text-gray-100 mb-2">{{ post.title }}</h3>
+          <p class="text-gray-300 text-sm mb-4">{{ post.summary }}</p>
+          <a href="{{ url_for('main.post', post_id=post.id) }}" class="text-blue-400 hover:underline mt-2 block">
+            <span class="inline-flex items-center">
+              Read More
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6l6 6-6 6"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<section class="additional-content py-20 bg-gray-800 text-white">
+  <div class="container mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-6">Why Choose Lyre Blog?</h2>
+    <p class="mb-12">We provide cutting-edge insights, expert analyses, and personalized website solutions tailored to your needs.</p>
+    <div class="features grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="feature-card bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-xl font-semibold mb-4">Latest Trends</h3>
+        <p>Stay updated with the newest tech and sports advancements.</p>
+      </div>
+      <div class="feature-card bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-xl font-semibold mb-4">Expert Insights</h3>
+        <p>Gain knowledge from industry leaders and professionals.</p>
+      </div>
+      <div class="feature-card bg-gray-700 p-6 rounded-lg">
+        <h3 class="text-xl font-semibold mb-4">Custom Solutions</h3>
+        <p>Build tailored websites and solutions to boost your business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer CTA -->
+<section class="cta-footer bg-gradient-to-r from-gray-800 to-gray-600 text-white py-20">
+  <div class="container mx-auto text-center">
+    <h2 class="text-4xl font-bold mb-6">Ready to Take Your Business Online?</h2>
+    <p class="text-lg font-medium mb-6">Build a professional website that drives results and reflects your vision.</p>
+    <a href="{{ url_for('main.contact') }}" class="bg-white text-gray-800 hover:bg-gray-200 px-8 py-4 rounded-lg font-semibold shadow-lg transition">Build Your Website Now</a>
+  </div>
+</section>
+
+<!-- JS for the Hero Section -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let images = document.querySelectorAll('.hero-image');
+    let currentIndex = 0;
+
+    // Initially show the first image
+    images[currentIndex].classList.remove('hidden');
+
+    // Function to change images
+    function changeImage() {
+      images[currentIndex].classList.add('hidden');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.remove('hidden');
+    }
+
+    // Change image every 20 seconds
+    setInterval(changeImage, 20000);
+  });
+</script>
 {% endblock %}

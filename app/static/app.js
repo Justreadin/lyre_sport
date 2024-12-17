@@ -102,4 +102,76 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("An error occurred while fetching comments.");
         }
     }
-});
+
+
+
+        const carousel = document.querySelector("#testimonial-carousel");
+        const slides = carousel.querySelector(".testimonial-slides");
+        const prevButton = document.querySelector("#prev-slide");
+        const nextButton = document.querySelector("#next-slide");
+        const indicators = document.querySelector(".carousel-indicators");
+      
+        let currentSlideIndex = 0;
+      
+        const updateCarousel = () => {
+          const totalSlides = slides.children.length;
+          slides.style.transition = "transform 0.5s ease-in-out";
+          slides.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+      
+          // Update active indicator
+          const activeIndicator = indicators.querySelector(".active");
+          if (activeIndicator) activeIndicator.classList.remove("active");
+          indicators.children[currentSlideIndex].classList.add("active");
+      
+          // Loop back to the beginning/end if out of bounds
+          if (currentSlideIndex < 0) {
+            currentSlideIndex = totalSlides - 1;
+            slides.style.transition = "none";  // Skip transition when looping back
+            slides.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+          } else if (currentSlideIndex >= totalSlides) {
+            currentSlideIndex = 0;
+            slides.style.transition = "none";  // Skip transition when looping back
+            slides.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+          }
+        };
+      
+        const createIndicators = () => {
+          const totalSlides = slides.children.length;
+          indicators.innerHTML = ""; // Clear existing indicators
+          for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement("li");
+            indicator.classList.add("indicator");
+            indicator.addEventListener("click", () => {
+              currentSlideIndex = i;
+              updateCarousel();
+            });
+            indicators.appendChild(indicator);
+          }
+          updateCarousel();
+        };
+      
+        prevButton.addEventListener("click", () => {
+          currentSlideIndex--;
+          updateCarousel();
+        });
+      
+        nextButton.addEventListener("click", () => {
+          currentSlideIndex++;
+          updateCarousel();
+        });
+      
+        // Auto-slide functionality (optional)
+        const autoSlideInterval = setInterval(() => {
+          currentSlideIndex++;
+          updateCarousel();
+        }, 5000); // Change slides every 5 seconds
+      
+        // Pause auto-sliding when hovering
+        carousel.addEventListener("mouseenter", () => clearInterval(autoSlideInterval));
+        carousel.addEventListener("mouseleave", () => setInterval(autoSlideInterval, 5000));
+      
+        createIndicators();
+      });
+      
+
+

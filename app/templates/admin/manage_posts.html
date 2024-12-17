@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ "Edit User" if user else "Create User" }} | Lyre Blog{% endblock %}
+
+{% block content %}
+<section class="bg-gray-50 py-16">
+    <div class="max-w-3xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+            <i class="fas fa-user{{ '-edit' if user else '-plus' }} text-blue-600"></i>
+            {{ "Edit User" if user else "Create User" }}
+        </h2>
+
+        <form action="{{ url_for('admin.edit_user' if user else 'admin.create_user', user_id=user.id if user else None) }}" method="POST" class="space-y-6 bg-white p-6 shadow-md rounded-lg">
+            <!-- CSRF Token -->
+            {{ form.hidden_tag() }}
+
+            <!-- Username -->
+            <div>
+                <label for="username" class="block text-lg font-semibold text-gray-900">Username</label>
+                {{ form.username(class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300") }}
+                {% for error in form.username.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-lg font-semibold text-gray-900">Email</label>
+                {{ form.email(class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300") }}
+                {% for error in form.email.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Role -->
+            <div>
+                <label for="role" class="block text-lg font-semibold text-gray-900">Role</label>
+                {{ form.role(class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300") }}
+                {% for error in form.role.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-md hover:bg-blue-700 transition duration-300">
+                {{ "Update User" if user else "Create User" }}
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

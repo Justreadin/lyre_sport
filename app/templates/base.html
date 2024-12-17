@@ -3,35 +3,366 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Lyre Sport{% endblock %}</title>
+    <meta name="icon" class="fas fa-blog" />
+    <title>{% block title %}Lyre Blog{% endblock %}</title>
+    <!-- TailwindCSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom Styles -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
-    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f9fa;
+        color: #000;
+        overflow-x: hidden;
+      }
+
+      header {
+        background-color: #121212;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+
+      /* Base Header Styles */
+      .header-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #1a1a1a;
+        padding: 20px 40px;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      .header-logo {
+        font-size: 1.4rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #ff4081;
+        text-decoration: none;
+      }
+      
+      .header-links {
+        display: flex;
+        gap: 20px;
+      }
+      
+      .header-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: color 0.3s;
+      }
+      
+      .header-links a:hover{
+        color: #ff4081;
+        background: transparent;
+      }
+      
+      /* Mobile Menu Button */
+      .header-menu {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.8rem;
+        cursor: pointer;
+      }
+      
+      .header-menu:focus {
+        outline: none;
+      }
+      
+      /* Sidebar Menu */
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 250px;
+        height: 100vh;
+        background-color: #000; /* Black background */
+        color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        transition: left 0.3s ease-in-out;
+        z-index: 110;
+      }
+      
+      .mobile-menu.active {
+        left: 0;
+      }
+      
+      .sidebar-logo {
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ff4081;
+      }
+      
+      .sidebar-links {
+        display: flex;
+        flex-direction: column; /* Stack links vertically */
+        gap: 15px;
+      }
+      
+      .sidebar-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 10px 0;
+        border-bottom: 1px solid #444; /* Separator between links */
+        transition: color 0.3s;
+      }
+      
+      .sidebar-links a:hover {
+        color: #ff4081;
+      }
+      
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .header-links {
+          display: none;
+        }
+      
+        .header-menu {
+          display: block;
+        }
+      
+        .sidebar-links a {
+          border-bottom: none; /* Remove borders on smaller screens */
+          text-align: left; /* Align text to the left */
+          padding: 10px;
+        }
+      }
+      
+      .hero-section {
+        background: url("https://via.placeholder.com/1500") center/cover
+          no-repeat;
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 50px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-heading {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(45deg, #ff4081, black);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      .hero-description {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        font-weight: 500;
+      }
+
+      .cta-button {
+        background-color: #ff4081;
+        color: white;
+        padding: 12px 30px;
+        font-weight: 700;
+        border-radius: 25px;
+        transition: background 0.3s;
+        text-transform: uppercase;
+      }
+
+      .cta-button:hover {
+        background-color: #f50057;
+      }
+
+      /* Additional Content Section */
+      .additional-content {
+        padding: 50px 20px;
+        background-color: #fff;
+        text-align: center;
+      }
+
+      .additional-content h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #222;
+      }
+
+      .additional-content p {
+        font-size: 1.05rem;
+        margin-bottom: 40px;
+        color: #555;
+      }
+
+      .additional-content .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .features .feature-card {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Footer */
+      footer {
+        background-color: #1a1a1a;
+        color: #ccc;
+        text-align: center;
+        padding: 20px 0;
+        border-top: 2px solid #333;
+        z-index: 9000;
+        height: 60px;
+      }
+
+      footer a {
+        color: #ff4081;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
+    <!-- Header -->
     <header>
-      <nav>
-        <a href="{{ url_for('main.index') }}">Home</a>
-        {% if session.get('user_id') %}
-        <a href="{{ url_for('main.create_post') }}">New Post</a>
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-        {% else %}
-        <a href="{{ url_for('auth.login') }}">Login</a>
-        <a href="{{ url_for('auth.register') }}">Register</a>
-        {% endif %}
+      <nav class="header-nav">
+        <a href="{{ url_for('main.index') }}" class="header-logo">
+          <i class="fas fa-blog"></i>
+          <span>Lyre Blog</span>
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="header-links">
+          <a href="{{ url_for('main.index') }}">Home</a>
+          {% if session.get('user_id') %} {% if current_user.is_admin() %}
+          <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+          {% else %}
+          <a href="{{ url_for('main.explore', category='all') }}">Explore</a>
+          {% endif %} {% endif %}
+          <a href="{{ url_for('main.explore') }}">Explore</a>
+          <a href="{{ url_for('main.about') }}">About Us</a>
+          <a href="{{ url_for('main.contact') }}">Contact</a>
+          {% if session.get('user_id') %}
+          <a href="{{ url_for('auth.logout') }}">Logout</a>
+          {% else %}
+          <a href="{{ url_for('auth.login') }}">Login</a>
+          <a href="{{ url_for('auth.register') }}">Register</a>
+          {% endif %}
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="header-menu" id="header-menu">
+          <i class="fas fa-bars"></i>
+        </button>
       </nav>
-      <h1>Lyrical</h1>
+
+      <!-- Sidebar Menu -->
+      <div class="mobile-menu" id="mobile-menu">
+        <div class="sidebar-logo">
+          <i class="fas fa-blog"></i>
+          Lyre Blog
+        </div>
+        <div class="sidebar-links">
+          <a href="{{ url_for('main.index') }}">Home</a>
+          {% if session.get('user_id') %} {% if current_user.is_admin() %}
+          <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+          {% else %}
+          <a href="{{ url_for('main.explore', category='all') }}">Explore</a>
+          {% endif %} {% endif %}
+          <a href="{{ url_for('main.explore') }}">Explore</a>
+          <a href="{{ url_for('main.about') }}">About Us</a>
+          <a href="{{ url_for('main.contact') }}">Contact</a>
+          {% if session.get('user_id') %}
+          <a href="{{ url_for('auth.logout') }}">Logout</a>
+          {% else %}
+          <a href="{{ url_for('auth.login') }}">Login</a>
+          <a href="{{ url_for('auth.register') }}">Register</a>
+          {% endif %}
+        </div>
+      </div>
     </header>
-    <main>
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if
-      messages %} {% for category, message in messages %}
-      <div class="flash {{ category }}">{{ message }}</div>
-      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-10">
+      {% block content %}{% endblock %}
     </main>
+
+    <!-- Footer -->
     <footer>
-      <p>&copy; 2024 lyre sport. All rights reserved.</p>
+      <p>&copy; 2024 Lyre Blog. All rights reserved.</p>
     </footer>
   </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuToggle = document.getElementById("header-menu");
+      const mobileMenu = document.getElementById("mobile-menu");
+    
+      // Open/Close Mobile Menu
+      menuToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("active");
+      });
+    
+      // Close Mobile Menu when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+          mobileMenu.classList.remove("active");
+        }
+      });
+    });
+    
+  </script>
 </html>

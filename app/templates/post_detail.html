@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<!-- Post Detail Section -->
+<section class="container mx-auto py-10 bg-gradient-to-b from-white to-gray-200 text-gray-900">
+  <div class="bg-white border border-gray-300 rounded-lg shadow-lg p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ post.title }}</h1>
+    <p class="text-gray-600 mb-4">{{ post.timestamp.strftime('%B %d, %Y') }}</p>
+    <div class="content text-gray-800 mb-8">
+      {{ post.content | safe }}
+    </div>
+    
+    <!-- Optional: Display Related Articles -->
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold text-gray-800">Related Posts</h2>
+      <ul class="list-none">
+        {% for related_post in related_posts %}
+          <li class="mt-2">
+            <a href="{{ url_for('main.view_post', post_id=related_post.id) }}" class="text-indigo-600 hover:underline">{{ related_post.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold text-gray-800">Comments</h2>
+      <div class="comments mt-4 space-y-6">
+        {% for comment in post.comments %}
+          <div class="comment bg-gray-50 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all">
+            <div class="flex items-center space-x-4 mb-3">
+              <div class="avatar">
+                <img src="{{ comment.user.profile_picture_url or 'default-avatar.png' }}" alt="{{ comment.user.username }}" class="w-12 h-12 rounded-full border-2 border-indigo-500">
+              </div>
+              <div class="username">
+                <p class="font-semibold text-gray-800">{{ comment.user.username }} <span class="text-sm text-gray-500">on {{ comment.timestamp.strftime('%B %d, %Y') }}</span></p>
+              </div>
+            </div>
+            <p class="text-gray-700">{{ comment.content }}</p>
+
+            <!-- Like/Dislike buttons -->
+            <div class="mt-2 flex items-center space-x-6">
+              <span class="mr-4 text-indigo-500 cursor-pointer" data-comment-id="{{ comment.id }}" data-action="like">
+                👍 {{ comment.likes|length }}
+              </span>
+              <span class="text-red-600 cursor-pointer" data-comment-id="{{ comment.id }}" data-action="dislike">
+                👎 {{ comment.dislikes|length }}
+              </span>
+            </div>
+
+            <!-- Emoji reactions (optional) -->
+            <div class="mt-2">
+              {% for emoji in comment.emojis %}
+                <span class="text-xl">{{ emoji }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+      <!-- Comment Form -->
+      <form method="POST" action="{{ url_for('main.add_comment', post_id=post.id) }}" class="mt-6">
+        {{ form.hidden_tag() }}
+        <textarea name="content" rows="3" class="w-full p-4 bg-gray-100 text-gray-900 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Add a comment..." required></textarea>
+        <button type="submit" class="mt-4 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-all duration-300">Post Comment</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block styles %}
+<style>
+  /* Custom Styles for White Theme */
+  .comment {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .comment:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .avatar img {
+    object-fit: cover;
+  }
+
+  .comment-text {
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .comment-header .username {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .comment-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .comment-footer .like-dislike {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .comment-footer .like-dislike span {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .comment-footer .like-dislike span:hover {
+    color: #ff4070;
+  }
+
+  .comment-form textarea {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    resize: none;
+    transition: all 0.3s ease;
+  }
+
+  .comment-form textarea:focus {
+    outline: none;
+    border-color: #7f5fc6;
+    box-shadow: 0 0 5px rgba(126, 95, 198, 0.6);
+  }
+
+  .comment-form button {
+    background-color: #7f5fc6;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  .comment-form button:hover {
+    background-color: #5a41a5;
+  }
+
+  .post-content {
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .related-posts a {
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .related-posts a:hover {
+    color: #1e40af;
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}

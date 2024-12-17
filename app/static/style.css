@@ -1,4 +1,150 @@
-/* Reset and basic styling */
+/* Carousel container */
+#testimonial-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #f9f9f9;  /* Light background */
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Slide wrapper */
+  .testimonial-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  /* Individual slide */
+  .testimonial-slide {
+    min-width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Navigation buttons */
+  #prev-slide,
+  #next-slide {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  #prev-slide {
+    left: 10px;
+  }
+  
+  #next-slide {
+    right: 10px;
+  }
+  
+  /* Indicators */
+  .carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .carousel-indicators .indicator {
+    width: 10px;
+    height: 10px;
+    background-color: #aaa;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .carousel-indicators .indicator.active {
+    background-color: #000;
+  }
+  
+  /* Button hover effect */
+  #prev-slide:hover,
+  #next-slide:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .error-message {
+    color: #e53e3e; /* Tailwind red-600 */
+    font-size: 0.875rem; /* Tailwind text-sm */
+    margin-top: 0.25rem; /* Tailwind mt-1 */
+}
+
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  
+  .hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .hidden {
+    opacity: 0;
+  }
+  
+
+  .post-card {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+  background-color: #2d2d2d; /* Darker background on hover */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.post-card h3 {
+  color: #f5f5f5;
+}
+
+.post-card p {
+  color: #cccccc;
+}
+
+
+
+
+/* Reset and basic styling 
 * {
     margin: 0;
     padding: 0;
@@ -22,7 +168,6 @@ body {
 
 /* Header */
 header {
-    background-color: #007bff;
     color: white;
     padding: 15px 0;
     text-align: center;
@@ -50,9 +195,7 @@ nav a {
     transition: background-color 0.3s;
 }
 
-nav a:hover {
-    background-color: #007bff;
-}
+
 
 /* Footer */
 footer {
@@ -198,3 +341,4 @@ form button:hover {
         font-size: 1.5em;
     }
 }
+*/

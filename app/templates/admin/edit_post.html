@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Post | Lyre Blog{% endblock %}
+
+{% block content %}
+<section class="bg-gray-50 py-16">
+    <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+            <i class="fas fa-edit text-green-600"></i> Edit Post
+        </h2>
+
+        <!-- Form -->
+        <form action="#" method="POST" class="bg-white shadow-lg rounded-lg p-8 space-y-6">
+            {{ form.hidden_tag() }}
+
+            <!-- Title Field -->
+            <div>
+                <label for="title" class="block text-lg font-semibold text-gray-800 mb-2">Post Title</label>
+                <div class="relative">
+                    <i class="fas fa-heading absolute top-3 left-3 text-gray-400"></i>
+                    {{ form.title(class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition") }}
+                </div>
+                {% for error in form.title.errors %}
+                <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Content Field -->
+            <div>
+                <label for="content" class="block text-lg font-semibold text-gray-800 mb-2">Content</label>
+                <div class="relative">
+                    <i class="fas fa-paragraph absolute top-3 left-3 text-gray-400"></i>
+                    {{ form.content(class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition") }}
+                </div>
+                {% for error in form.content.errors %}
+                <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Image URL -->
+            <div>
+                <label for="image_url" class="block text-lg font-semibold text-gray-800 mb-2">Image URL (Optional)</label>
+                <div class="relative">
+                    <i class="fas fa-image absolute top-3 left-3 text-gray-400"></i>
+                    {{ form.image_url(class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition") }}
+                </div>
+                {% for error in form.image_url.errors %}
+                <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Video URL -->
+            <div>
+                <label for="video_url" class="block text-lg font-semibold text-gray-800 mb-2">Video URL (Optional)</label>
+                <div class="relative">
+                    <i class="fas fa-video absolute top-3 left-3 text-gray-400"></i>
+                    {{ form.video_url(class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition") }}
+                </div>
+                {% for error in form.video_url.errors %}
+                <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition duration-300">
+                <i class="fas fa-save"></i> Update Post
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

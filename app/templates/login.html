@@ -1,18 +1,97 @@
 {% extends "base.html" %}
 
+{% block title %}Login | Lyre Blog{% endblock %}
+
 {% block content %}
-<div class="form-container">
-    <h2>Login</h2>
-    <form method="POST" action="{{ url_for('auth.login') }}">
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
+<section class="bg-gray-50 py-16">
+    <div class="max-w-md mx-auto px-6">
+        <h2 class="text-4xl font-bold text-gray-900 text-center mb-8">Login to Your Account</h2>
+        <form id="login-form" action="{{ url_for('auth.login') }}" method="POST" class="space-y-6">
+            <!-- Email Input -->
+            <div class="flex flex-col gap-4">
+                <label for="email" class="text-lg font-semibold text-gray-900">Email Address</label>
+                <input type="email" id="email" name="email" class="w-full px-6 py-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition duration-300" placeholder="Enter your email" required>
+                <span id="email-error" class="text-red-500 hidden">Please enter a valid email address.</span>
+            </div>
+            <!-- Password Input -->
+            <div class="flex flex-col gap-4">
+                <label for="password" class="text-lg font-semibold text-gray-900">Password</label>
+                <input type="password" id="password" name="password" class="w-full px-6 py-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 transition duration-300" placeholder="Enter your password" required>
+                <span id="password-error" class="text-red-500 hidden">Password is required.</span>
+            </div>
+            <!-- Login Button -->
+            <button type="submit" class="w-full px-8 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-300">Login</button>
+        </form>
+
+        <!-- Error Message Section -->
+        <div id="login-error-message" class="mt-6 text-center text-red-500 hidden">
+            <p>Invalid email or password. Please try again.</p>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+
+        <div class="mt-6 text-center">
+            <p class="text-gray-700">Don't have an account? <a href="{{ url_for('auth.register') }}" class="text-indigo-600 hover:text-indigo-700 transition duration-300">Register here</a></p>
         </div>
-        <button type="submit">Login</button>
-    </form>
-</div>
+    </div>
+</section>
+
+<script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission to allow validation
+
+        // Clear previous error messages
+        document.getElementById("email-error").classList.add("hidden");
+        document.getElementById("password-error").classList.add("hidden");
+        document.getElementById("login-error-message").classList.add("hidden");
+
+        // Get form data
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        // Simple client-side validation
+        var isValid = true;
+
+        // Check for valid email format
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            document.getElementById("email-error").classList.remove("hidden");
+            isValid = false;
+        }
+
+        // Check if password is entered
+        if (password.trim() === "") {
+            document.getElementById("password-error").classList.remove("hidden");
+            isValid = false;
+        }
+
+        // If valid, submit the form
+        if (isValid) {
+            // Perform an AJAX request to check login credentials (simulate backend check)
+            fetch('{{ url_for('auth.login') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.is_admin) {
+                        // Redirect to the admin dashboard if the user is an admin
+                        window.location.href = '/admin/dashboard';  // Ensure this URL matches the actual admin route
+                    } else {
+                        // Redirect to the homepage if the user is a regular user
+                        window.location.href = '/';  // Adjust the URL for your homepage
+                    }
+                } else {
+                    // Display backend error message
+                    document.getElementById("login-error-message").classList.remove("hidden");
+                }
+            })
+            .catch(error => {
+                console.error('Error during login:', error);
+            });
+        }
+    })
+</script>
 {% endblock %}
