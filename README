@@ -1,1 +1,169 @@
-Single-database configuration for Flask.
+# Fullstack Web Blog Application
+
+## Overview
+This is a fullstack web blog application built with the following technologies:
+- **Backend**: Flask (Python)
+- **Frontend**: HTML, CSS, Tailwind CSS, JavaScript
+- **Database**: MySQL
+
+The application allows users to create, read, update, and delete blog posts. It also supports user authentication, enabling registered users to manage their posts while allowing visitors to read blogs.
+
+The live version of the blog can be accessed at: [favour.pythonanywhere.com](https://favour.pythonanywhere.com)
+
+---
+
+## Features
+- **User Authentication**: Registration, login, and logout functionality.
+- **CRUD Operations**: Create, read, update, and delete blog posts.
+- **Responsive Design**: Built with Tailwind CSS for seamless viewing across devices.
+- **Comment Section**: Readers can comment on posts.
+- **Search**: Users can search for posts by title or content.
+- **Admin Dashboard**: Admins can manage posts and user accounts.
+
+---
+
+## Prerequisites
+Before running the application, ensure you have the following installed:
+- **Python 3.8+**
+- **MySQL Server**
+- **Node.js** (for managing Tailwind CSS if customization is required)
+
+---
+
+## Installation
+
+### Backend Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Justreadin/sport_blog.git
+   cd fullstack-blog-app
+   ```
+
+2. Create a virtual environment and activate it:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install the required Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Configure the database:
+   - Create a MySQL database (e.g., `sport_blog`).
+   - Update the database configuration in `config.py`:
+     ```python
+     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://username:password@localhost/sport_blog'
+     ```
+
+5. Initialize the database:
+   ```bash
+   flask db init
+   flask db migrate
+   flask db upgrade
+   ```
+
+6. Start the Flask server:
+   ```bash
+   flask run
+   ```
+
+   By default, the application runs on `http://127.0.0.1:5000`.
+
+### Frontend Setup
+1. Navigate to the `static` directory:
+   ```bash
+   cd static
+   ```
+
+2. Install Node.js dependencies (if you plan to customize Tailwind CSS):
+   ```bash
+   npm install
+   ```
+
+3. Build the Tailwind CSS file (optional):
+   ```bash
+   npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch
+   ```
+
+---
+
+## File Structure
+```
+sports_blog/
+├── static/
+│   ├── style.css
+│   └── app.js
+├── templates/
+|   ├── admin/
+│   ├── base.html
+│   ├── index.html
+│   ├── post.html
+│   ├── create_post.html
+│   ├── edit_post.html
+│   ├── register.html
+│   └── login.html
+├── __init__.py
+├── config.py
+├── forms.py
+├── models.py
+├── routes.py
+└── run.py
+```
+
+---
+
+## Usage
+1. Register a new account or log in with existing credentials.
+2. Create new blog posts, edit existing ones, or delete them.
+3. View all posts on the homepage.
+4. Search for posts by title or content using the search bar.
+5. Comment on posts as a registered user.
+6. Admins can log in to access the admin dashboard for managing all users and posts.
+
+---
+
+## Technologies Used
+- **Backend**: Flask, Flask-SQLAlchemy, Flask-Migrate, Flask-WTF
+- **Frontend**: HTML, CSS, Tailwind CSS, JavaScript
+- **Database**: MySQL (with pymysql for Python integration)
+- **Tools**: Node.js, npm (for Tailwind CSS management)
+
+---
+
+## Future Enhancements
+- Add categories and tags for posts.
+- Implement user profile pages.
+- Add rich text editing for blog content.
+- Integrate email notifications for user actions.
+- Enhance security measures (e.g., password reset functionality).
+
+---
+
+## Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+1. Fork the repository.
+2. Create a new branch for your feature:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add your message here"
+   ```
+4. Push the branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Create a pull request.
+
+---
+
+## Contact
+For any inquiries, feel free to contact:
+- **Name**: Akintoye Favour
+- **Email**: dave.400g@gmail.com
+- **GitHub**: https://github.com/Justreadin
+
